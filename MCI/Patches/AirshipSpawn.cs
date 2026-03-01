@@ -1,5 +1,4 @@
 using HarmonyLib;
-using UnityEngine;
 
 namespace MCI.Patches;
 
@@ -16,7 +15,7 @@ public static class AirshipSpawn
             if (!player.Data.PlayerName.Contains(MCIPlugin.RobotName))
                 continue;
 
-            var rand = Random.Range(0, __instance.Locations.Count);
+            var rand = UnityEngine.Random.Range(0, __instance.Locations.Count);
             player.gameObject.SetActive(true);
             player.NetTransform.RpcSnapTo(__instance.Locations[rand].Location);
         }

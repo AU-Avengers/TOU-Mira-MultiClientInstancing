@@ -1,11 +1,11 @@
 ﻿using InnerNet;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using BepInEx.Unity.IL2CPP;
 using MCI.Patches;
 using System.Collections;
 using MCI.Embedded.ReactorCoroutines;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace MCI;
 
@@ -35,7 +35,6 @@ public static class InstanceControl
         PlayerControl.LocalPlayer.moveable = false;
 
         var light = PlayerControl.LocalPlayer.lightSource;
-        var savedId = PlayerControl.LocalPlayer.PlayerId;
 
         //Setup new player
         var newPlayer = PlayerById(playerId);
@@ -156,7 +155,7 @@ public static class InstanceControl
         }
     }
 
-    public static PlayerControl PlayerById(byte id) => PlayerControl.AllPlayerControls.ToArray().ToList().Find(x => x.PlayerId == id);
+    public static PlayerControl PlayerById(byte id) => PlayerControl.AllPlayerControls.ToArray().ToList().Find(x => x.PlayerId == id)!;
 
     public static void RemovePlayer(byte id)
     {

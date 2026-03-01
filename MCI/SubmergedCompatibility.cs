@@ -2,17 +2,8 @@
 using HarmonyLib;
 using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.InteropTypes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
-/// <summary>
-/// ///
-/// https://www.youtube.com/watch?v=-1qju6V1jLM
-/// - MDB
-///
-/// </summary>
 namespace MCI;
 
 public static class SubmergedCompatibility
@@ -38,15 +29,15 @@ public static class SubmergedCompatibility
     {
         Loaded = IL2CPPChainloader.Instance.Plugins.TryGetValue(SUBMERGED_GUID, out var plugin);
 
-        if (!Loaded)
+        if (!Loaded || plugin == null || plugin.Instance is not BasePlugin pluginInstance)
             return;
 
-        Plugin = plugin!.Instance as BasePlugin;
+        Plugin = pluginInstance;
         Version = plugin.Metadata.Version;
 
         Assembly = Plugin!.GetType().Assembly;
         Types = AccessTools.GetTypesFromAssembly(Assembly);
-        InjectedTypes = (Dictionary<string, Type>)AccessTools.PropertyGetter(Array.Find(Types, t => t.Name == "ComponentExtensions"), "RegisteredTypes").Invoke(null, null);
+        InjectedTypes = (Dictionary<string, Type>)AccessTools.PropertyGetter(Array.Find(Types, t => t.Name == "ComponentExtensions"), "RegisteredTypes").Invoke(null, null)!;
 
         CustomPlayerData = InjectedTypes.Where(t => t.Key == "CustomPlayerData").Select(x => x.Value).First();
         hasMap = AccessTools.Field(CustomPlayerData, "_hasMap");
@@ -54,10 +45,11 @@ public static class SubmergedCompatibility
         SpawnInState = Types.First(t => t.Name == "SpawnInState");
 
         var subSpawnSystem = Types.First(t => t.Name == "SubmarineSpawnInSystem");
-        var GetReadyPlayerAmount = AccessTools.Method(subSpawnSystem, "GetReadyPlayerAmount");
+        var getReadyPlayerAmount = AccessTools.Method(subSpawnSystem, "GetReadyPlayerAmount");
         currentState = AccessTools.Field(subSpawnSystem, "currentState");
 
-        MCIPlugin.Singleton.Harmony.Patch(GetReadyPlayerAmount, new(AccessTools.Method(typeof(SubmergedCompatibility), nameof(ReadyPlayerAmount))));
+        var harmony = new Harmony("mci.submerged.patch");
+        harmony.Patch(getReadyPlayerAmount, new(AccessTools.Method(typeof(SubmergedCompatibility), nameof(ReadyPlayerAmount))));
     }
 
     public static bool ReadyPlayerAmount(dynamic __instance, ref int __result)
@@ -82,5 +74,5 @@ public static class SubmergedCompatibility
         hasMap.SetValue(comp, true);
     }
 
-    public static object TryCast(this Il2CppObjectBase self, Type type) => AccessTools.Method(self.GetType(), nameof(Il2CppObjectBase.TryCast)).MakeGenericMethod(type).Invoke(self, null);
+    public static object TryCast(this Il2CppObjectBase self, Type type) => AccessTools.Method(self.GetType(), nameof(Il2CppObjectBase.TryCast)).MakeGenericMethod(type).Invoke(self, null)!;
 }

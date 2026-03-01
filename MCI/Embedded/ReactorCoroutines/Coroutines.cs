@@ -1,5 +1,4 @@
 ﻿using BepInEx.Unity.IL2CPP.Utils;
-using System;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;

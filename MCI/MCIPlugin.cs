@@ -4,40 +4,45 @@ using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Injection;
 using MCI.Components;
-using System;
+using MiraAPI;
+using Reactor;
+using Reactor.Utilities;
+using TownOfUs;
 using UnityEngine.SceneManagement;
 
 namespace MCI;
 
-[BepInAutoPlugin("dragonbreath.au.mci", "MCI", VersionString)]
+[BepInAutoPlugin("auavengers.tou.mci", "TOU-MCI")]
 [BepInProcess("Among Us.exe")]
+[BepInDependency(ReactorPlugin.Id)]
+[BepInDependency(MiraApiPlugin.Id)]
+[BepInDependency(TownOfUsPlugin.Id)]
 [BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
 public partial class MCIPlugin : BasePlugin
 {
-    public const string VersionString = "0.0.7";
-    public static Version vVersion = new(VersionString);
     public Harmony Harmony { get; } = new(Id);
 
-    public static MCIPlugin Singleton { get; private set; } = null;
     internal static ManualLogSource Logger { get; private set; }
 
     public static string RobotName { get; set; } = "Bot";
 
     public static bool Enabled { get; set; } = true;
-    public static bool IKnowWhatImDoing { get; set; } = false;
+    public static bool IKnowWhatImDoing { get; set; }
     public static bool Persistence { get; set; } = true;
 
-    public static Debugger Debugger { get; set; } = null;
+    public static Debugger Debugger { get; set; }
 
+    /// <summary>
+    ///     Determines if the current build is a dev build.
+    /// </summary>
+    public static bool IsDevBuild => Version.Contains("dev", StringComparison.OrdinalIgnoreCase) || Version.Contains("ci", StringComparison.OrdinalIgnoreCase);
+    
     public override void Load()
     {
-        if (Singleton != null)
-            return;
+        ReactorCredits.Register("TOU-MCI", Version, IsDevBuild, ReactorCredits.AlwaysShow);
         Logger = this.Log;
 
-        Singleton = this;
         Harmony.PatchAll();
-        UpdateChecker.CheckForUpdate();
         SubmergedCompatibility.Initialize();
 
         ClassInjector.RegisterTypeInIl2Cpp<Debugger>();
