@@ -1,54 +1,79 @@
 ﻿using BepInEx;
+using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
-using System;
+using Il2CppInterop.Runtime.Injection;
+using MCI.Components;
+using MiraAPI;
+using Reactor;
+using Reactor.Utilities;
+using TownOfUs;
 using UnityEngine.SceneManagement;
 
-namespace MCI
+namespace MCI;
+
+[BepInAutoPlugin("auavengers.tou.mci", "TOU-MCI")]
+[BepInProcess("Among Us.exe")]
+[BepInDependency(ReactorPlugin.Id)]
+[BepInDependency(MiraApiPlugin.Id)]
+[BepInDependency(TownOfUsPlugin.Id)]
+[BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
+public partial class MCIPlugin : BasePlugin
 {
-    [BepInAutoPlugin("dragonbreath.au.mci", "MCI", VersionString)]
-    [BepInProcess("Among Us.exe")]
-    [BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
-    public partial class MCIPlugin : BasePlugin
+    public Harmony Harmony { get; } = new(Id);
+
+    internal static ManualLogSource Logger { get; private set; }
+
+    public static string RobotName { get; set; } = "Bot";
+
+    public static bool Enabled { get; set; } = true;
+    public static bool IKnowWhatImDoing { get; set; }
+    public static bool Persistence { get; set; } = true;
+
+    public static Debugger Debugger { get; set; }
+
+    /// <summary>
+    ///     Determines if the current build is a dev build.
+    /// </summary>
+    public static bool IsDevBuild => Version.Contains("dev", StringComparison.OrdinalIgnoreCase) || Version.Contains("ci", StringComparison.OrdinalIgnoreCase);
+    
+    public override void Load()
     {
-        public const string VersionString = "0.0.6";
-        internal static Version vVersion = new(VersionString);
-        public Harmony Harmony { get; } = new(Id);
+        ReactorCredits.Register("TOU-MCI", Version, IsDevBuild, ReactorCredits.AlwaysShow);
+        Logger = this.Log;
 
-        public static MCIPlugin Singleton { get; private set; } = null;
+        Harmony.PatchAll();
+        SubmergedCompatibility.Initialize();
 
-        public static string RobotName { get; set; } = "Bot";
+        ClassInjector.RegisterTypeInIl2Cpp<Debugger>();
+        ClassInjector.RegisterTypeInIl2Cpp<Embedded.ReactorCoroutines.Coroutines.Component>();
+        Debugger = this.AddComponent<Debugger>();
+        this.AddComponent<Embedded.ReactorCoroutines.Coroutines.Component>();
 
-        public static bool Enabled { get; set; } = true;
-        public static bool IKnowWhatImDoing { get; set; } = false;
-        public override void Load()
+        SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>)((scene, _) =>
         {
-            if (Singleton != null) return;
-            Singleton = this;
+            if (scene.name == "MainMenu")
+                ModManager.Instance.ShowModStamp();
+        }));
 
-            Harmony.PatchAll();
-            UpdateChecker.CheckForUpdate();
-
-            SubmergedCompatibility.Initialize();
-
-            SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>)((scene, _) =>
-            {
-                if (scene.name == "MainMenu")
-                {
-                    ModManager.Instance.ShowModStamp();
-                }
-            }));
-        }
-
-        internal static bool Persistence = true;
-    }
-
-    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
-    public static class CountdownPatch
-    {
-        public static void Prefix(GameStartManager __instance)
-        {
-            __instance.countDownTimer = 0;
-        }
+        Logger.LogWarning($"\n-------------------------\n" + // Yellow stands out.
+                       $"| MultiClientInstancing |\n" +
+                       $"|                       |\n" +
+                       $"| Developed By:         |\n" +
+                       $"| MyDragonBreath        |\n" +
+                       $"| WhichTwix             |\n" +
+                       $"| AlchlcDvl             |\n" +
+                       $"| lekillerdesgames      |\n" +
+                       $"-------------------------\n" +
+                       $"| Controls:             |\n" +
+                       $"| F5: Add Players       |\n" +
+                       $"|  + LSHIFT To Bypass 15|\n" +
+                       $"| F6: Toggle Bot Removal|\n" +
+                       $"|  + LSHIFT IKWIDM      |\n" +
+                       $"| F9: Cycle Upwards     |\n" +
+                       $"| F10: Cycle Downwards  |\n" +
+                       $"| F11: Remove All       |\n" +
+                       $"| F1: Toggle Debugger   |\n" +
+                       $"-------------------------");
     }
 }
