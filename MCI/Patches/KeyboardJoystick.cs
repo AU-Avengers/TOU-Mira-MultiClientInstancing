@@ -58,9 +58,6 @@ public static class Keyboard_Joystick
 
     internal static void Switch(bool increment)
     {
-        if (LobbyBehaviour.Instance)
-            return;
-
         Cycle(increment);
         InstanceControl.SwitchTo((byte)ControllingFigure);
     }
