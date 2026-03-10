@@ -160,8 +160,6 @@ public class Debugger : MonoBehaviour
                         Destroy(body.gameObject);
                     }
 
-                    DeathStateSync.CancelPendingDeathSync(PlayerControl.LocalPlayer.PlayerId);
-
                     GameHistory.ClearMurder(PlayerControl.LocalPlayer);
 
                     PlayerControl.LocalPlayer.Revive();
@@ -230,8 +228,6 @@ public class Debugger : MonoBehaviour
                             body.transform.localPosition.y + 0.3636f);
                         Destroy(body.gameObject);
                     }
-
-                    DeathStateSync.CancelPendingDeathSync(player.PlayerId);
 
                     GameHistory.ClearMurder(player);
 

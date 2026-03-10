@@ -4,9 +4,9 @@
     "net6.0": {
       "AllOfUs.MiraAPI": {
         "type": "Direct",
-        "requested": "[0.3.8, )",
-        "resolved": "0.3.8",
-        "contentHash": "2X6yG4OfaR2AEq7m6IYZGaxidQttZ2vA2FNT3bJrNY7bkzveYk4jWB4JygHDmkVsbs97E4f8q8dVBfnbqLKTgw==",
+        "requested": "[0.3.8-ci.875, )",
+        "resolved": "0.3.8-ci.875",
+        "contentHash": "NcvcyoCErx+riXGQizu4whzz0m5jdiGLwOgIt9Ob2Vck0ONLSFxRGLZbnzUNeFv+cNSekwX6DLScAghABs30Wg==",
         "dependencies": {
           "BepInEx.Unity.IL2CPP": "6.0.0-be.735",
           "Reactor": "2.3.1"
