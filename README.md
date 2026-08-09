@@ -1,13 +1,15 @@
 ngu# AmongUs.MultiClientInstancing
 
 I think the best way to describe this is as a method of host testing what your "mod" could look like with multiple clients.<br>
-It is in no way a replacement for testing your mod and has a complete disregard for rpc calls.<br>
+It is in no way a replacement for testing your mod.<br>
+Rpc's aimed at a specific client are looped back to the bot they were addressed to, so per-player calls apply instead of being dropped - see `MCI/Patches/RpcLoopback.cs`.<br>
 It can also be buggy with different mods differently depending on how they interact with amongus - so chances are its not going to be perfect.<br>
 Think of this as more like a ease-of-access utility then a standlone testing environment.
 
 ## Important
 Please pr and contribute where you feel is necessary.<br>
-The mod is not designed to be the end all for testing - so expect some things, mostly rpc's, not to work - please read the source to understand how this works.<br>
+The mod is not designed to be the end all for testing - so expect some things not to work - please read the source to understand how this works.<br>
+Every bot shares the one real client's process and object graph, so an rpc that only changes game state behaves correctly, while one that drives the hud or plays an animation will do so on whichever player you are currently controlling.<br>
 Relies on Bepinex
 
 ## Controls

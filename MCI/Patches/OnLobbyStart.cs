@@ -9,6 +9,9 @@ public static class OnLobbyStart
     {
         MCIPlugin.Enabled = AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame;
 
+        // Writers abandoned between StartRpcImmediately and FinishRpcImmediately would otherwise accumulate forever.
+        RpcLoopback.Reset();
+
         if (MCIPlugin.Enabled && MCIPlugin.Persistence && InstanceControl.Clients.Count != 0)
         {
             var count = InstanceControl.Clients.Count;
