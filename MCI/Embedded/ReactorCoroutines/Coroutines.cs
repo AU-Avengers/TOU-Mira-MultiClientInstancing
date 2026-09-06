@@ -16,15 +16,19 @@ public static class Coroutines
         {
         }
 
-        private void Awake()
+        #pragma warning disable S2325 // ignored!
+        #pragma warning disable CA1822 // ignored!
+        public void Awake()
         {
             Instance = this;
         }
 
-        private void OnDestroy()
+        public void OnDestroy()
         {
             Instance = null;
         }
+        #pragma warning restore S2325 // ignored!
+        #pragma warning restore CA1822 // ignored!
     }
 
     internal static readonly ConditionalWeakTable<IEnumerator, Coroutine> _ourCoroutineStore = new();

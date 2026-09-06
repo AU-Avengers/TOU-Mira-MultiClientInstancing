@@ -178,7 +178,7 @@ public static class InstanceControl
 
     public static void SetForegroundForAlive(this MeetingHud __instance)
     {
-        __instance.amDead = false;
+        __instance.hasForegroundForDeadBeenSet = false;
         __instance.SkipVoteButton.gameObject.SetActive(true);
         __instance.SkipVoteButton.AmDead = false;
         __instance.Glass.gameObject.SetActive(false);

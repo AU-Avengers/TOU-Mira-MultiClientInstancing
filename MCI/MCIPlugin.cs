@@ -64,6 +64,7 @@ public partial class MCIPlugin : BasePlugin
                        $"| WhichTwix             |\n" +
                        $"| AlchlcDvl             |\n" +
                        $"| lekillerdesgames      |\n" +
+                       $"| AtonyGit (for ToU)    |\n" +
                        $"-------------------------\n" +
                        $"| Controls:             |\n" +
                        $"| F5: Add Players       |\n" +
