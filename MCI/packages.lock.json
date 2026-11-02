@@ -4,9 +4,9 @@
     "net6.0": {
       "AllOfUs.MiraAPI": {
         "type": "Direct",
-        "requested": "[0.5.0, )",
-        "resolved": "0.5.0",
-        "contentHash": "9Y1fjZrYAuDOXe0Ds+D+J0gfSue+64TpFrnXCElnC4jMJzPVu0F9ukDSWROy/DMSD2id5xA8f3r0rb7stI2Giw==",
+        "requested": "[0.6.0, )",
+        "resolved": "0.6.0",
+        "contentHash": "oOvhZRo1/ibyfw+QtpHgrB+FX1M3oJaIq1NZb16TmJEUJVLWo9SHi+TeG13hP41QsxHrKb/0HQouk9EEWavOOA==",
         "dependencies": {
           "BepInEx.Unity.IL2CPP": "6.0.0-be.735",
           "Reactor": "2.5.0-ci.371"
@@ -14,9 +14,9 @@
       },
       "AmongUs.GameLibs.Steam": {
         "type": "Direct",
-        "requested": "[2026.8.18, )",
-        "resolved": "2026.8.18",
-        "contentHash": "sSGu2zGYvLboOc83PzPxQ0yGsK1YrhIO/538Tfzc/5FKfEbGCtCQErcKV0wdiYZCHGpCe561RzzfrBtp46jcgQ=="
+        "requested": "[2026.9.29, )",
+        "resolved": "2026.9.29",
+        "contentHash": "LhZAevu5OV03KpFLjqXRb9RP2rrWbm8xemdIyNFQVPOVwV0etInH2BZFpDBBIrSnqGzCWa7qOHBhIaVDIfk/jA=="
       },
       "BepInEx.AutoPlugin": {
         "type": "Direct",
@@ -64,11 +64,10 @@
       },
       "TownOfUsMira": {
         "type": "Direct",
-        "requested": "[1.7.2, )",
-        "resolved": "1.7.2",
-        "contentHash": "WI88cSjKGckK/sqxs8lTQ4zgjt50DQCJstpFhcrKFNJHIBQ5owxD+kM4wy+R74tWGOTHjgx/kOJP5wPguyqmcw==",
+        "requested": "[1.7.9-beta1, )",
+        "resolved": "1.7.9-beta1",
+        "contentHash": "m72Unv0RzryAynPZ3Pp+7Bt6Lulv4hVwOuQNRnPHij0URJy3k1wxLVbF8wbv9q5eZmJRc3EFtziJRIrMaRcinA==",
         "dependencies": {
-          "AllOfUs.MiraAPI": "0.5.0",
           "BepInEx.Unity.IL2CPP": "6.0.0-be.735",
           "Reactor": "2.5.0-ci.371"
         }
