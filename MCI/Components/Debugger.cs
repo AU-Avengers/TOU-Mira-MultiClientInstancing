@@ -47,6 +47,9 @@ public class Debugger : MonoBehaviour
                 return;
             }
 
+            AbilityCheats.NoCooldowns = GUILayout.Toggle(AbilityCheats.NoCooldowns, "No Cooldowns");
+            AbilityCheats.UnlimitedUses = GUILayout.Toggle(AbilityCheats.UnlimitedUses, "Unlimited Ability Uses");
+
             if (AmongUsClient.Instance == null || GameManager.Instance == null ||
                 !(AmongUsClient.Instance.GameState is InnerNetClient.GameStates.Joined
                     or InnerNetClient.GameStates.Started ||
